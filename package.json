@@ -1,0 +1,30 @@
+{
+  "title": "GA Hmm",
+  "name": "gahmm",
+  "version": "0.0.1",
+  "description": "Redirects GA ajax calls on other sites to your own tracking ID.",
+  "main": "index.js",
+  "author": "Tristan",
+  "engines": {
+    "firefox": ">=38.0a1",
+    "fennec": ">=38.0a1"
+  },
+  "license": "MIT",
+  "keywords": [
+    "google analytics"
+  ],
+  "preferences": [{
+    "name": "gaDomainName",
+    "type": "string",
+    "title": "Enter a domain name you own. Do not include \"http://\"",
+    "description": "GA will log activity as if it occured here. For example, http://www.3rdparty.com/index.html will be logged as http://www.yourdomain.com/www.3rdparty.com/index.html",
+    "value": "www.yourdomain.com"
+  },
+    {
+      "name": "gaTrackingId",
+      "type": "string",
+      "title": "Enter your GA tracking ID.",
+      "description": "If you're not sure what this is then you might be using the wrong extension, sorry :^(",
+      "value": "UA-12345678-1"
+    }]
+}
