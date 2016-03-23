@@ -1,37 +1,39 @@
-//TODO: COMMENTS
-//TODO: PUT ON GITHUB
-//TODO: README.md
-//TODO: TIDY VARIABLE NAMES
-//TODO: MAKE SURE I DIDN'T BREAK IT!
-//TODO: MAKE MORE TESTABLE AND ADD TESTS? isGaRequest(url) return bool, modifyIfNeeded(url) returns url
 let { Cc, Ci } = require('chrome');
 let self = require("sdk/self");
-let preferences = require("sdk/simple-prefs").prefs;
+let pref = require("sdk/simple-prefs").prefs;
 let observerService = Cc["@mozilla.org/observer-service;1"].getService(Ci.nsIObserverService);
 let ioService = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService);
 
-//TODO: REMOVE METHOD
-function makeURI(aURL, aOriginCharset, aBaseURI) {
-    return ioService.newURI(aURL, aOriginCharset, aBaseURI);
-}
+// If the URL provided is to GA with a tracking ID, returns a modified url with different
+// ID, otherwise return null.
+modifyUrlIfNeeded = function modifyUrlIfNeeded(url){
+    let gaRegex = /^http(s|):\/\/www\.google-analytics\.com.*tid=UA-\d+-\d+.*/i;
+    if (gaRegex.test(url) && url.indexOf(pref.gaTrackingId) < 0){
+        // replace their tracking ID with yours...
+        let modUrl = url.replace(new RegExp("tid=UA-\\d+-\\d+", "i"), "tid=" + pref.gaTrackingId);
+        // replace reported location with your domain (eg dl=http://them.com/ -> dl=http://you.com/them.com/)...
+        return modUrl.replace(new RegExp("&dl=http(s|)%3A%2F%2F","i"), "&dl=http%3A%2F%2F" + pref.gaDomainName + "%2F");
+    } else {
+        return null;
+    }
+};
 
-var observer = {
+// intercept and occasionally modify HTTP/HTTPS requests...
+let httpObserver = {
     observe: function (aSubject, aTopic, aData) {
         aSubject.QueryInterface(Ci.nsIHttpChannel);
         let url = aSubject.URI.spec;
-        let myUa = preferences.gaTrackingId
-        let gaRegex = /^http(s|):\/\/www\.google-analytics\.com.*tid=UA.*/i
-        if (gaRegex.test(url) && url.indexOf(myUa) < 0) {
-            let ownUrlStr = url.replace(new RegExp("tid=UA-\\d+-\\d+", "i"), "tid=" + myUa);
-            if (ownUrlStr !== url) {
-                let myDomain = preferences.gaDomainName;
-                ownUrlStr = ownUrlStr.replace(new RegExp("&dl=http"), "&dl=http%3A%2F%2F" + myDomain + "%2F");
-                aSubject.redirectTo(makeURI(ownUrlStr, aSubject.URI.originCharset, null));
-                aSubject.setRequestHeader("Referer", myDomain, false);
-            }
+        let modUrl = modifyUrlIfNeeded(url);
+        if (modUrl){
+            // replace URL and referrer in request...
+            let urlObj = ioService.newURI(modUrl, aSubject.URI.originCharset, null);
+            aSubject.redirectTo(urlObj);
+            let myDomain = pref.gaDomainName;
+            aSubject.setRequestHeader("Referer", "http://" + myDomain, false);
         }
     }
-}
+};
+observerService.addObserver(httpObserver, "http-on-modify-request", false);
 
-
-observerService.addObserver(observer, "http-on-modify-request", false);
+// expose functions to unit tests..
+exports.modifyUrlIfNeeded = modifyUrlIfNeeded;
