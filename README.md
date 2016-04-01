@@ -14,10 +14,12 @@ Reasons to use this might include...
 It intercepts and modifies HTTP requests from Firefox.
 
 For example this HTTP request...
-https://www.google-analytics.com/collect?v=1&_v=j41&a=1514558475&t=pageview&_s=1&dl=**https%3A%2F%2Fwww.petcircle.com.au%2F**&ul=en-gb&de=UTF-8&dt=Pet%20food%20online%20%7C%20Pet%20Circle&sd=24-bit&sr=1600x900&vp=1548x240&je=0&fl=21.0%20r0&_u=SCCAgAAr~&jid=1486004412&cid=130006103.1458379477&tid=**UA-11111111-1**&gtm=GTM-KTBCBV&cd1=SHIBA07&cd2=org.apache.jsp.s1.welcome_jsp&z=48977340
+
+https: //www.google-analytics.com/collect?v=1&_v=j41&a=1514558475&t=pageview&_s=1&dl=**https%3A%2F%2Fwww.petcircle.com.au%2F**&ul=en-gb&de=UTF-8&dt=Pet%20food%20online%20%7C%20Pet%20Circle&sd=24-bit&sr=1600x900&vp=1548x240&je=0&fl=21.0%20r0&_u=SCCAgAAr~&jid=1486004412&cid=130006103.1458379477&tid=**UA-11111111-1**&gtm=GTM-KTBCBV&cd1=SHIBA07&cd2=org.apache.jsp.s1.welcome_jsp&z=48977340
 
 becomes...
-https://www.google-analytics.com/collect?v=1&_v=j41&a=1514558475&t=pageview&_s=1&dl=**https%3A%2F%2Fwww.yoursite.com%2Fwww.petcircle.com.au%2F**&ul=en-gb&de=UTF-8&dt=Pet%20food%20online%20%7C%20Pet%20Circle&sd=24-bit&sr=1600x900&vp=1548x240&je=0&fl=21.0%20r0&_u=SCCAgAAr~&jid=1486004412&cid=130006103.1458379477&tid=**UA-22222222-2**&gtm=GTM-KTBCBV&cd1=SHIBA07&cd2=org.apache.jsp.s1.welcome_jsp&z=48977340
+
+https: //www.google-analytics.com/collect?v=1&_v=j41&a=1514558475&t=pageview&_s=1&dl=**https%3A%2F%2Fwww.yoursite.com%2Fwww.petcircle.com.au%2F**&ul=en-gb&de=UTF-8&dt=Pet%20food%20online%20%7C%20Pet%20Circle&sd=24-bit&sr=1600x900&vp=1548x240&je=0&fl=21.0%20r0&_u=SCCAgAAr~&jid=1486004412&cid=130006103.1458379477&tid=**UA-22222222-2**&gtm=GTM-KTBCBV&cd1=SHIBA07&cd2=org.apache.jsp.s1.welcome_jsp&z=48977340
 
 ## How do I use this?
 
